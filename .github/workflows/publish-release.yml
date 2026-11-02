@@ -1,0 +1,39 @@
+name: Publish Smart Guard Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'dist/zzz_smart_guard_v2.1.zip'
+      - 'RELEASE_NOTES.md'
+      - '.github/workflows/publish-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify package checksum
+        run: |
+          echo "71ba80732e7d3c422fcf89d30a2c1754110469e207861dc4f4db24ea5eb407df  dist/zzz_smart_guard_v2.1.zip" | sha256sum --check
+
+      - name: Create or update release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v2.1 >/dev/null 2>&1; then
+            gh release upload v2.1 dist/zzz_smart_guard_v2.1.zip --clobber
+          else
+            gh release create v2.1 dist/zzz_smart_guard_v2.1.zip \
+              --target "$GITHUB_SHA" \
+              --title "Smart Guard v2.1" \
+              --notes-file RELEASE_NOTES.md \
+              --latest
+          fi
