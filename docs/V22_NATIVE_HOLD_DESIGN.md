@@ -1,6 +1,8 @@
+> **SUPERSEDED / REJECTED AS PRIMARY DESIGN (2026-11-02):** A user must be able to issue an RMB move and have it take effect immediately **without first disabling a hold-position toggle**. The native `Can't Move` + 100% speed debuff architecture violates that requirement. Keep this document as a comparison/technical reference only. **New active design:** [RMB_FIRST_DESIGN.md](RMB_FIRST_DESIGN.md).
+
 # Smart Guard v2.2 research — native Hold Position ability
 
-Status (2026-11-02): **recommended design, no build or gameplay validation yet**. Keep v2.1 GitHub Release untouched.
+Historical proposal only. **Not approved for implementation**: violates seamless RMB movement; no build or gameplay validation. Keep v2.1 GitHub Release untouched.
 
 ## Recommendation
 
