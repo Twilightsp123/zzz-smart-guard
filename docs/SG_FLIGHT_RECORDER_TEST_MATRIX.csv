@@ -1,0 +1,16 @@
+test,phase,action,telemetry_modules,required_output,pass_or_gate
+1,T1-0,四支监控单位依次选中,M0|M1|M2,BOOT_OK|CAPABILITY_MAP|UNIT_CENSUS,所有核心模块存在且错误隔离
+1,T1-1,弓手枪兵正面射击和装填,M3|M4|M5|M7,FIRING_BASELINE|RELOAD_CURVE,能区分正常开火与装填
+1,T1-2,友军遮挡直射枪兵,M3|M4|M5|M6|M7,OBSTRUCTION_STATUS|AUTO_MOVE|SHADOW_TARGET,遮挡有证据或者明确UNKNOWN
+1,T1-3,地形遮挡射击,M3|M4|M5|M6|M7,TERRAIN_LOS|STATUS_KEYS,不把地形不可见等同于射弹遮挡
+1,T1-4,射程外和侧后方转向,M3|M4|M5,IN_RANGE|BEARING|MOVE_DELTA,区分射界转向与射程外追击
+1,T1-5,自由射击然后人工RMB目标,M2|M4|M6|M7,TARGET_CHANGE|COMMAND_CORRELATION|SHADOW_REASON,避免把selection误当成确定命令来源
+1,T1-6,RMB移动拖拽旋转Shift两段MOVE,M2|M3|M8,COMMAND_TIMELINE|ORDERED_POSITION,注明无法确认的逐单位来源
+1,T1-7,火炮地面目标状态开关最后撤退,M2|M3|M4|M8,ATTACK_GROUND|WITHDRAW|FINAL_SUMMARY,观察器绝不发送控制命令
+2,T2-0,启动检查同样的观测器,M0|M1|M8,RECORDER_HASH|PATCH_MANIFEST,记录器版本一致
+2,T2-1,正面射击和装填,M3|M4|M5,BASELINE_FIRING_COMPARISON,可射击时仍射击
+2,T2-2,友军地形遮挡及候选转火,M3|M4|M5|M6|M7,TARGET_SWITCH|REAL_SHOTS|MOVE_DELTA,不得反复错误转火或擅自追击
+2,T2-3,侧后方转向对比,M3|M4|M8,PIVOT_DISTANCE|FIRST_SHOT_DELAY,不得损害射界和玩家旋转
+2,T2-4,RMB移动拖拽指定目标Shift移动,M2|M3|M8,PLAYER_CMD_PROTECTION,零覆盖玩家明确命令
+2,T2-5,火炮攻击地面状态开关最后撤退,M2|M3|M4|M8,EXCLUSION|WITHDRAW,不得破坏特殊命令
+2,T2-6,持续交战负载与关闭,M0|M8,FINAL_SUMMARY|ERROR_COUNTS|DROPPED_EVENTS,无崩溃和不受控日志膨胀
