@@ -39,10 +39,10 @@
 - 只允许 4 个主要单位进入 100ms 高频轨迹采样（两支同类弓手、一支直射枪兵、一支火炮）；其它单位只建立轻量静态清单。
 - CCO 状态与装填可 200–500ms 采样，目标候选快照 500–1000ms；命令、目标变化、模式变化及模块错误立即写事件。
 - 普通采样写“变化量/关键变化 + 定期快照”，每 5 秒写 HEARTBEAT；重要命令事件立即输出，其他记录设置有界缓存与写出节流，避免海量日志。
-- 首选官方 out() 写入游戏 script_log，并以独有前缀 [SGFR] 输出单行结构化 JSON。不要假定游戏 Lua 拥有独立磁盘文件写入能力。离线工具从 script_log 提取 sgfr.jsonl。
+- **日志双通道**：实验包内自带**非空** script/enable_console_logging 文件（依据原版 all_scripted.lua 激活 script_log）；以带 seq 的 [SGFR] JSON 行同时通过 out() 写入游戏 script_log 和 ModLog() 写入 lua_mod_log.txt，单通道抛错时另一通道继续。解析器按 seq 去重。无需用户额外安装“日志启用 MOD”或修改启动参数。不要假定 Lua 可以直接任意创建 sgfr.jsonl；由离线工具从两种官方日志提取。
 - 逐条日志含 seq、battle_time_ms、recorder_build、mode、kind、uid、target_uid、field_value、field_valid、error、estimated_source、confidence。未观测到与 false 不能混淆。
 - 不提供 UnitController 实例、不调用 halt/attack_unit/goto/release_control、不加减速技能；第一轮必须完全只读。
-- 在日志开头写 [SGFR] BOOT_OK、能力表；结尾写 FINAL_SUMMARY（累计事件数、样本数、丢弃数、各模块状态）。如未到结尾，离线解析器报告 TRUNCATED，不要求重新实机。
+- 在日志开头写 [SGFR] BOOT_OK、能力表；结尾写 FINAL_SUMMARY（累计事件数、样本数、丢弃数、各模块状态）。如未到结尾，离线解析器报告 TRUNCATED，不要求重新实机。必须先检查双通道的 BOOT_OK 与 FINAL_SUMMARY 是否一致，并报告丢弃事件数。
 - 场景标签用一个固定单位的选择事件作辅助标记，并全程录屏与时间轴对照；不假定存在可靠 RMB 键盘钩子。录像是人工确认“真遮挡、真 RMB、实际是否开火”的证据。
 
 ## 2. 第 1 次实机：ONE BATTLE = 集中收集全部诊断
